@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #fad0c4 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .heart {
+            font-size: 80px;
+            animation: heartbeat 1s ease-in-out infinite;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #e91e63, #ff5722);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            color: white;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.05);
+        }
+
+        /* Page 2 Styles */
+        .question {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .option-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 2px solid #e91e63;
+            background: white;
+            color: #e91e63;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            background: #e91e63;
+            color: white;
+        }
+
+        .input-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .input-section.active {
+            display: block;
+        }
+
+        input {
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 2px solid #e91e63;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #ff5722;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4caf50, #8bc34a);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: #e91e63;
+            font-weight: bold;
+            display: none;
+            line-height: 1.6;
+        }
+
+        .result.active {
+            display: block;
+        }
+
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp 4s linear forwards;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Section visibility */
+        .valentine-section {
+            display: block;
+        }
+
+        .date-section {
+            display: none;
+        }
+
+        .date-section.active {
+            display: block;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #e91e63;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 2px solid #e91e63;
+            border-radius: 25px;
+            margin-right: 10px;
+        }
+
+        .back-link:hover {
+            background: #e91e63;
+            color: white;
+            text-decoration: none;
+        }
+
+        .prompt-text {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Message Section Styles */
+        .message-section {
+            display: none;
+        }
+
+        .message-section.active {
+            display: block;
+        }
+
+        .message-container {
+            background: linear-gradient(135deg, #ffe4ec, #fff5f8);
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #e91e63;
+            margin-bottom: 30px;
+        }
+
+        .message {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.8;
+            text-align: left;
+            font-style: italic;
+        }
+
+        .message-signature {
+            font-size: 1rem;
+            color: #e91e63;
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div class="container">
+        <!-- Valentine Section -->
+        <div class="valentine-section" id="valentineSection">
+            <span class="heart">💕</span>
+            <h1>Will you be my Valentine?</h1>
+            <div class="buttons">
+                <button class="btn btn-yes" id="yesBtn">Yes</button>
+                <button class="btn btn-no" id="noBtn">No</button>
+            </div>
+        </div>
+
+        <!-- Date Planning Section -->
+        <div class="date-section" id="dateSection">
+            <span class="heart">💕</span>
+            <h1>Our Date Plans</h1>
+            <p class="question">Where would you like to go on our date?</p>
+            
+            <div class="options">
+                <button class="btn btn-yes" onclick="showInput('restaurant')">Restaurant</button>
+                <button class="btn btn-yes" onclick="showInput('movie')">Movie</button>
+                <button class="btn btn-yes" onclick="showInput('arcade')">Arcade</button>
+                <button class="btn btn-yes" onclick="showInput('karaoke')">Karaoke</button>
+            </div>
+
+            <a href="valentines_man.html" class="back-link" style="margin-top: 20px;">💕 Your Valentine's Man 💕</a>
+            <button class="back-link" onclick="showMessageSection()">💕 My Message for You 💕</button>
+
+            <!-- Restaurant Options -->
+            <div class="input-section" id="restaurantOptions">
+                <p class="prompt-text">Choose a restaurant:</p>
+                <div class="option-buttons">
+                    <button class="option-btn" onclick="selectRestaurant('Jollibee')">Jollibee</button>
+                    <button class="option-btn" onclick="selectRestaurant('McDo')">McDo</button>
+                    <button class="option-btn" onclick="selectRestaurant('KFC')">KFC</button>
+                </div>
+                <p class="prompt-text">Or type your own:</p>
+                <input type="text" id="restaurantInput" placeholder="Which restaurant?">
+                <br>
+                <button class="submit-btn" onclick="submitRestaurant()">Enter 💕</button>
+                <br>
+                <span class="back-link" onclick="goBack()">← Back</span>
+            </div>
+
+            <!-- Movie Input -->
+            <div class="input-section" id="movieInputSection">
+                <p class="prompt-text">What movie do you want to watch?</p>
+                <input type="text" id="movieInput" placeholder="Type the movie name...">
+                <br>
+                <button class="submit-btn" onclick="submitMovie()">Enter 💕</button>
+                <br>
+                <span class="back-link" onclick="goBack()">← Back</span>
+            </div>
+
+            <!-- Arcade Options -->
+            <div class="input-section" id="arcadeOptions">
+                <p class="prompt-text">Would you like to play basketball? Race car? Or any kind of games, just type there!</p>
+                <input type="text" id="arcadeInput" placeholder="What games do you want to play?">
+                <br>
+                <button class="submit-btn" onclick="submitArcade()">Enter 💕</button>
+                <br>
+                <span class="back-link" onclick="goBack()">← Back</span>
+            </div>
+
+            <!-- Karaoke Input -->
+            <div class="input-section" id="karaokeInputSection">
+                <p class="prompt-text">What song do you want to sing?</p>
+                <input type="text" id="karaokeInput" placeholder="Type the song name...">
+                <br>
+                <button class="submit-btn" onclick="submitKaraoke()">Enter 💕</button>
+                <br>
+                <span class="back-link" onclick="goBack()">← Back</span>
+            </div>
+
+            <p class="result" id="result"></p>
+        </div>
+
+        <!-- Message Section -->
+        <div class="message-section" id="messageSection">
+            <span class="heart">💕</span>
+            <h1>Happy Valentine's Day!</h1>
+            
+            <div class="message-container">
+                <p class="message">
+                    Happy valentines bebe, thank you for coming into my life, bringing joy, and helping me to grow up with you. I hope bebe na sana hangang dulo natoh, at hindi ka mawala sakin, mahabang pagsubok toh bebe but I know na kakayanin natin toh, basta magkasama tayo at sabay tayong lalaban bebe, I love you so much.
+                </p>
+                <p class="message-signature">From your bebe boi: Aki</p>
+            </div>
+
+            <button class="back-link" onclick="goBackFromMessage()">← Back</button>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const heartsBg = document.getElementById('heartsBg');
+        const valentineSection = document.getElementById('valentineSection');
+        const dateSection = document.getElementById('dateSection');
+        const messageSection = document.getElementById('messageSection');
+        
+        let yesSize = 1;
+        let noHoverCount = 0;
+
+        // Floating hearts background
+        function createFloatingHeart() {
+            const heart = document.createElement('span');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '💕';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heartsBg.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createFloatingHeart, 500);
+
+        // Move No button function
+        function moveNoButton() {
+            noHoverCount++;
+            
+            yesSize = 1 + (noHoverCount * 0.15);
+            if (yesSize > 3) yesSize = 3;
+            
+            yesBtn.style.transform = `scale(${yesSize})`;
+            yesBtn.style.transition = 'transform 0.3s ease';
+            
+            const screenWidth = window.innerWidth - 150;
+            const screenHeight = window.innerHeight - 150;
+            
+            const newX = Math.random() * screenWidth;
+            const newY = Math.random() * screenHeight;
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+            noBtn.style.zIndex = '100';
+        }
+
+        noBtn.addEventListener('mouseover', function() {
+            moveNoButton();
+        });
+
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // Yes button - transition to date section!
+        yesBtn.addEventListener('click', function() {
+            // Hearts celebration
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('span');
+                    heart.innerHTML = ['💕', '💖', '💗', '💓', '💝'][Math.floor(Math.random() * 5)];
+                    heart.style.position = 'fixed';
+                    heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '-50px';
+                    heart.style.animation = `floatUp ${Math.random() * 2 + 2}s ease-in forwards`;
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 50);
+            }
+
+            // Confetti
+            const colors = ['#e91e63', '#ff5722', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-20px';
+                    confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear forwards`;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+
+            // Transition to date section
+            setTimeout(() => {
+                valentineSection.style.display = 'none';
+                dateSection.classList.add('active');
+            }, 1500);
+        });
+
+        // Show input sections
+        function showInput(option) {
+            // Hide all input sections first
+            document.getElementById('restaurantOptions').classList.remove('active');
+            document.getElementById('movieInputSection').classList.remove('active');
+            document.getElementById('arcadeOptions').classList.remove('active');
+            document.getElementById('karaokeInputSection').classList.remove('active');
+            document.getElementById('result').classList.remove('active');
+
+            if (option === 'restaurant') {
+                document.getElementById('restaurantOptions').classList.add('active');
+            } else if (option === 'movie') {
+                document.getElementById('movieInputSection').classList.add('active');
+                document.getElementById('movieInput').focus();
+            } else if (option === 'arcade') {
+                document.getElementById('arcadeOptions').classList.add('active');
+                document.getElementById('arcadeInput').focus();
+            } else if (option === 'karaoke') {
+                document.getElementById('karaokeInputSection').classList.add('active');
+                document.getElementById('karaokeInput').focus();
+            }
+        }
+
+        // Back button
+        function goBack() {
+            document.getElementById('restaurantOptions').classList.remove('active');
+            document.getElementById('movieInputSection').classList.remove('active');
+            document.getElementById('arcadeOptions').classList.remove('active');
+            document.getElementById('karaokeInputSection').classList.remove('active');
+            document.getElementById('result').classList.remove('active');
+        }
+
+        // Restaurant functions
+        function selectRestaurant(restaurant) {
+            document.getElementById('result').innerHTML = `💕 Yey, lets go to ${restaurant}!<br>Food trip tayo! 🍔🍟`;
+            document.getElementById('result').classList.add('active');
+            document.getElementById('restaurantOptions').classList.remove('active');
+        }
+
+        function submitRestaurant() {
+            const restaurant = document.getElementById('restaurantInput').value.trim();
+            if (restaurant) {
+                document.getElementById('result').innerHTML = `💕 Yey, lets go to ${restaurant}!<br>Food trip tayo! 🍔🍟`;
+                document.getElementById('result').classList.add('active');
+                document.getElementById('restaurantOptions').classList.remove('active');
+            }
+        }
+
+        // Movie function
+        function submitMovie() {
+            const movie = document.getElementById('movieInput').value.trim();
+            if (movie) {
+                document.getElementById('result').innerHTML = `💕 Owkiee, lets go watch ${movie}!<br>Prepare ka na sa popcorn! 🍿`;
+                document.getElementById('result').classList.add('active');
+                document.getElementById('movieInputSection').classList.remove('active');
+            }
+        }
+
+        // Arcade function
+        function submitArcade() {
+            const game = document.getElementById('arcadeInput').value.trim();
+            if (game) {
+                document.getElementById('result').innerHTML = `💕 Well then lets play ${game}!<br>ILL MAKE sure na mananalo ako sayo MWAHAHAHA! 🎮`;
+                document.getElementById('result').classList.add('active');
+                document.getElementById('arcadeOptions').classList.remove('active');
+            }
+        }
+
+        // Karaoke function
+        function submitKaraoke() {
+            const song = document.getElementById('karaokeInput').value.trim();
+            if (song) {
+                document.getElementById('result').innerHTML = `💕 Aww zg zg kantahin natin ${song}!<br>Singer yarn, magaling ako magsalita! 🎤`;
+                document.getElementById('result').classList.add('active');
+                document.getElementById('karaokeInputSection').classList.remove('active');
+            }
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('restaurantInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') submitRestaurant();
+        });
+        document.getElementById('movieInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') submitMovie();
+        });
+        document.getElementById('arcadeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') submitArcade();
+        });
+        document.getElementById('karaokeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') submitKaraoke();
+        });
+
+        // Message section functions
+        function showMessageSection() {
+            valentineSection.style.display = 'none';
+            dateSection.classList.remove('active');
+            messageSection.classList.add('active');
+        }
+
+        function goBackFromMessage() {
+            messageSection.classList.remove('active');
+            dateSection.classList.add('active');
+        }
+
+        // Check URL parameter to show correct section
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('section') === 'date') {
+                valentineSection.style.display = 'none';
+                dateSection.classList.add('active');
+            }
+        };
+    </script>
+</body>
+</html>
