@@ -278,6 +278,49 @@
             font-weight: bold;
             text-align: right;
         }
+
+        /* Valentine's Man Section Styles */
+        .valentine-man-section {
+            display: none;
+        }
+
+        .valentine-man-section.active {
+            display: block;
+        }
+
+        .messages {
+            text-align: left;
+            padding: 20px;
+        }
+
+        .message-item {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(233, 30, 99, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid #e91e63;
+            line-height: 1.5;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #e91e63, #ff5722);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -307,7 +350,7 @@
                 <button class="btn btn-yes" onclick="showInput('karaoke')">Karaoke</button>
             </div>
 
-            <a href="valentines_man.html" class="back-link" style="margin-top: 20px;">💕 Your Valentine's Man 💕</a>
+            <button class="back-link" onclick="showValentineManSection()" style="margin-top: 20px;">💕 Your Valentine's Man 💕</button>
             <button class="back-link" onclick="showMessageSection()">💕 My Message for You 💕</button>
 
             <!-- Restaurant Options -->
@@ -373,6 +416,30 @@
 
             <button class="back-link" onclick="goBackFromMessage()">← Back</button>
         </div>
+
+        <!-- Valentine's Man Section -->
+        <div class="valentine-man-section" id="valentineManSection">
+            <span class="heart">💕</span>
+            <h1>Your Valentine's Man 💖</h1>
+            
+            <div class="messages">
+                <div class="message-item">💕 Hawak kalang sakin kapag mag kasama tayo</div>
+                <div class="message-item">💕 Sabihin mo sakin kung anong gusto mo</div>
+                <div class="message-item">💕 Kain tayo kapag nagugutom ka</div>
+                <div class="message-item">💕 Bili tayo milktea</div>
+                <div class="message-item">💕 Bili tayo ng potato corner, hati tayo</div>
+                <div class="message-item">💕 Susubuan kita</div>
+                <div class="message-item">💕 Laro tayo madami</div>
+                <div class="message-item">💕 Love na love kita bebe, ill make sure na sa susunod ay mas masaya pa tayo</div>
+                <div class="message-item">💕 Gala tayo</div>
+                <div class="message-item">💕 Hahalikan kita sa noo</div>
+                <div class="message-item">💕 Yakapin kita ng mahigpit</div>
+                <div class="message-item">💕 At pang huli, mag thank you ako sayo at huhugkan ka ng mahigpit at hahalikan ka sa noo bilang paalam ko sayo</div>
+                <div class="message-item">💕 Next time bebe, magkasama na tayo at lagi tayong lalabas o mag da-date</div>
+            </div>
+
+            <button class="back-btn" onclick="goBackFromValentineMan()">← Back to Date Plans</button>
+        </div>
     </div>
 
     <script>
@@ -382,6 +449,7 @@
         const valentineSection = document.getElementById('valentineSection');
         const dateSection = document.getElementById('dateSection');
         const messageSection = document.getElementById('messageSection');
+        const valentineManSection = document.getElementById('valentineManSection');
         
         let yesSize = 1;
         let noHoverCount = 0;
@@ -577,6 +645,17 @@
 
         function goBackFromMessage() {
             messageSection.classList.remove('active');
+            dateSection.classList.add('active');
+        }
+
+        function showValentineManSection() {
+            dateSection.classList.remove('active');
+            messageSection.classList.remove('active');
+            valentineManSection.classList.add('active');
+        }
+
+        function goBackFromValentineMan() {
+            valentineManSection.classList.remove('active');
             dateSection.classList.add('active');
         }
 
